@@ -3,3 +3,5 @@ gspread
 uvicorn
 apscheduler
 pytz
+pydantic
+pydantic-settings
