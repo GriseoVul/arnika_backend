@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from contextlib import asynccontextmanager
 from typing import Dict, List, Optional
 from fastapi import FastAPI
-from sheetRequest import get_google_sheet
+from app.sheetRequest import get_google_sheet
 
 
 CAHCE_TTL = timedelta(minutes=30)
