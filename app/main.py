@@ -1,12 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-from app.scheduler import (
-    lifespan, 
-    cached_data, 
-    update_cache, 
-    get_cache_info
-)
+from app.scheduler import cache_manager, lifespan
 from config import settings
 import uvicorn
 import logging
@@ -25,11 +20,11 @@ app.add_middleware(
 
 @app.get("/api/data/{slug}")
 async def get_data_by_slug(slug: str):
-    if not cached_data:
+    if not cache_manager.cached_data:
         logger.info("Updating cache")
-        await update_cache()
+        await cache_manager.update_cache()
     
-    for record in cached_data:
+    for record in cache_manager.cached_data:
         if record.get("slug") == slug:
             logger.info(f"getting {slug}")
             return record
@@ -38,7 +33,7 @@ async def get_data_by_slug(slug: str):
 
 @app.get("/api/cache-info")
 async def cache_info():
-    return get_cache_info()
+    return cache_manager.get_cache_info()
 
 def main():
     uvicorn.run(
