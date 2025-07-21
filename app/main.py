@@ -9,7 +9,9 @@ from app.scheduler import (
 )
 from config import settings
 import uvicorn
+import logging
 
+logger = logging.getLogger(__name__)
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(HTTPSRedirectMiddleware)
@@ -24,13 +26,15 @@ app.add_middleware(
 @app.get("/api/data/{slug}")
 async def get_data_by_slug(slug: str):
     if not cached_data:
+        logger.info("Updating cache")
         await update_cache()
     
     for record in cached_data:
         if record.get("slug") == slug:
+            logger.info(f"getting {slug}")
             return record
     
-    raise HTTPException(404, detail="{slug} not found!")
+    raise HTTPException(404, detail=f"{slug} not found!")
 
 @app.get("/api/cache-info")
 async def cache_info():
