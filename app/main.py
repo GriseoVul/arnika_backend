@@ -7,6 +7,7 @@ from scheduler import (
     update_cache, 
     get_cache_info
 )
+from ..config import settings
 import uvicorn
 
 
@@ -40,8 +41,8 @@ def main():
         app,
         host="0.0.0.0",
         port=443,
-        ssl_certfile="/etc/letsencrypt/live/api.odaa.studio/fullchain.pem",
-        ssl_keyfile="/etc/letsencrypt/live/api.odaa.studio/privkey.pem"
+        ssl_certfile=f"/etc/letsencrypt/live/{settings.hostName}/fullchain.pem",
+        ssl_keyfile=f"/etc/letsencrypt/live/{settings.hostName}/privkey.pem"
     )
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@ import subprocess
 from datetime import datetime
 from ..config import settings
 
+
+#not used 
 def renew_cert():
     try:
         result = subprocess.run([
