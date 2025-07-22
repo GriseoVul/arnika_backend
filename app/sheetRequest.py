@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from ..config import settings
+from config import settings
 
 def get_google_sheet():
     creds = Credentials.from_service_account_file(
