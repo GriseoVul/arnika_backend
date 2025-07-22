@@ -7,7 +7,6 @@ from fastapi import FastAPI
 from app.sheetRequest import get_google_sheet
 
 class CacheManager:
-
     CAHCE_TTL = timedelta(minutes=30)
     last_update_time: Optional[datetime] = None
     cached_data: List[Dict[str, str]] = []

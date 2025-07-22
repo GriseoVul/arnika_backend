@@ -1,11 +1,6 @@
-
 (() => {
-  /* ───────────── CONFIG ───────────── */
-  const SHEET_ID   = '1fh-HOuPI_kNVrBgtv_Hf6DPHwe3l0bJs0pZYTS4Ul4o';
-  const SHEET_TAB  = 'Аптеки';
-  const CACHE_TTL  = 60 * 1000;                // 1 мин кэш в sessionStorage
-  const FETCH_TIMEOUT = 7000;                  // 7 сек – отрубить «висящий» fetch
-  const API_URL = "http://217.114.11.187:8000/api/data/"
+  
+  const API_URL = "https://api.odaa.studio/api/data"
   /* колонка Google Sheets → CSS-класс */
   const MAP = {
     // паспорт аптеки
@@ -16,15 +11,11 @@
     'Район'                   : '.ph-district',
     'Адрес'                   : '.ph-address',
     'Номер телефона'          : '.ph-phone',
+    'Ориентир'                : '.ph-landmark',
 
     // график
     'ПН':'.ph-mon','ВТ':'.ph-tue','СР':'.ph-wed','ЧТ':'.ph-thu',
     'ПТ':'.ph-fri','СБ':'.ph-sat','ВС':'.ph-sun',
-
-    // доп
-    'Ориентир'        : '.ph-landmark',
-    'График (бот)'    : '.ph-schedule-bot',
-    'Карта всех аптек': '.ph-map-link',
 
     // акции / вакансии
     'Акция1':'.ph-sale1','Акция2':'.ph-sale2',
@@ -51,7 +42,7 @@
     }
 
     if (selector === '.ph-phone' && value) {
-        const cleanPhone = value.replace(/\D/g, '')
+        const cleanPhone = String(value).replace(/\D/g,'');
         element.href = `tel:${cleanPhone}`
     }
     element.textContent = value;
@@ -77,7 +68,7 @@
 
       const row = await getData();
       
-      Object.entries(MAP).forEach(([col, cls]) => put(cls, row[col]));
+      Object.entries(MAP).forEach(([col, cls]) => put(cls, row[0][col]));
 
     } catch (e) {
       console.error('[apteki] load error', e);
