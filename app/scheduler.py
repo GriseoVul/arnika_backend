@@ -14,9 +14,7 @@ class CacheManager:
     async def update_cache(self):
         try:
             sheet = get_google_sheet().get_worksheet(0)
-            self.cached_data = sheet.get_all_records(
-                expected_headers=["Статус", "Номер аптеки по лицензии", "Название", "Город", "Район", "Адрес", "Номер телефона", "Акция", "Ориентир", "Номер аптеки (бот)","Карта всех аптек", "ПН","ВТ", "СР", "ЧТ","ПТ", "СБ", "ВС","slug"]
-            )
+            self.cached_data = sheet.get_all_records()
             self.last_update_time = datetime.now()
             print(f"Cache updated at {self.last_update_time}")
         except Exception as e:
