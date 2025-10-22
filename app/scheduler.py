@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from typing import Dict, List, Optional
 from fastapi import FastAPI
 from app.sheetRequest import get_google_sheet
+from app.cerbot import renew_cert
 
 class CacheManager:
     CAHCE_TTL = timedelta(minutes=30)
@@ -34,6 +35,7 @@ scheduler = AsyncIOScheduler(timezone=utc)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler.add_job(cache_manager.update_cache, 'interval', days=1)
+    scheduler.add_job(renew_cert, 'interval', days=1)
     scheduler.start()
     yield
     scheduler.shutdown()
